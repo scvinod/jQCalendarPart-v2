@@ -1,7 +1,7 @@
-<script type="text/javascript" language="javascript" src="/jQCalendarPart/jquery-2.1.4.min.js"></script>
-<script src="/jQCalendarPart/jquery-ui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/jQCalendarPart/jquery-ui.min.css" />
-<script type="text/javascript" src="/jQCalendarPart/jquery.SPServices-0.7.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="/sites/devsite/jQCalendarPart/jquery-2.1.4.min.js"></script>
+<script src="/sites/devsite/jQCalendarPart/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/sites/devsite/jQCalendarPart/jquery-ui.min.css" />
+<script type="text/javascript" src="/sites/devsite/jQCalendarPart/jquery.SPServices-0.7.2.min.js"></script>
 
 <script type="text/javascript">
 	JSRequest.EnsureSetup();
@@ -58,7 +58,7 @@
 			{
 				operation: "GetListItems",
 				async: false,
-				listName: listName,
+				listName: "Calendar",
 				CAMLViewFields: camlFields,
 				CAMLQuery: camlQuery,
 				CAMLQueryOptions: camlOptions,
@@ -70,7 +70,7 @@
 		{
 			calendarListItems = xData;
 			$(".divDatePicker").datepicker();
-			$(".anchCalLi").click(function() {
+			$(".divDatePicker .anchCalLi").click(function() {
 					window.location.href = $(this).attr('href');
 			});
 		}
@@ -84,6 +84,7 @@
 
 			$(calendarListItems.responseXML).SPFilterNode("z:row").each(function()
 			{
+				console.log("divDatePicker " + $(this).attr("ows_Title"));
 				date = new Date($(this).attr("ows_EventDate").substring(0, 4), $(this).attr("ows_EventDate").substring(5, 7) - 1, $(this).attr("ows_EventDate").substring(8, 10), $(this).attr("ows_EventDate").substring(11, 13), $(this).attr("ows_EventDate").substring(14, 16), $(this).attr("ows_EventDate").substring(17, 19));
 
 				itemURL = siteRelUrl + "/Lists/Calendar/DispForm.aspx?ID=" + $(this).attr("ows_ID");
@@ -97,7 +98,7 @@
 					eventDuration = '(' + getFormattedTime($(this).attr("ows_EventDate")) + ' - ' + getFormattedTime($(this).attr("ows_EndDate")) + ')';
 				}
 					
-				$('.ui-datepicker-calendar a')
+				$('.divDatePicker .ui-datepicker-calendar a')
 					.filter(function(index)
 					{
 						return $(this).text() == date.getDate() &&
@@ -105,7 +106,7 @@
 							$(this).parent('td').attr("data-month") == date.getMonth();
 					}).css("border", "2px solid #2989d1");
 					
-				if($('.ui-datepicker-calendar a').first().parent('td').attr("data-year") == date.getFullYear() && $('.ui-datepicker-calendar a').first().parent('td').attr("data-month") == date.getMonth()){					
+				if($('.divDatePicker .ui-datepicker-calendar a').first().parent('td').attr("data-year") == date.getFullYear() && $('.divDatePicker .ui-datepicker-calendar a').first().parent('td').attr("data-month") == date.getMonth()){					
 					//Creating popup for the very first list item	
 					if (currentDate == null)
 					{
@@ -121,7 +122,7 @@
 					else if (date.getDate() == currentDate.getDate())
 					{
 						calliHtml = '<li class="divCalendarLI"><a class="anchCalLi" href="' + itemURL + '">' + $(this).attr("ows_Title") + '</a> ' + eventDuration + '</li>';
-						$("#" + date.getDate() + "_eventPopUp" + " .divCalendarUL").append(calliHtml);
+						$(".divDatePicker #" + date.getDate() + "_eventPopUp" + " .divCalendarUL").append(calliHtml);
 					}
 				}
 				currentDate = date;
@@ -131,12 +132,12 @@
 		function CreatePopUp(eventDate, eventDuration, itemURL, title)
 		{
 
-			if ($("#" + eventDate.getDate() + "_eventPopUp").html() != null)
+			if ($(".divDatePicker #" + eventDate.getDate() + "_eventPopUp").html() != null)
 			{
-				$("#" + eventDate.getDate() + "_eventPopUp").empty();
+				$(".divDatePicker #" + eventDate.getDate() + "_eventPopUp").empty();
 			}
 
-			$('.ui-datepicker-calendar a')
+			$('.divDatePicker .ui-datepicker-calendar a')
 				.filter(function(index)
 				{
 					return $(this).text() == eventDate.getDate() &&
@@ -144,7 +145,7 @@
 						$(this).parent('td').attr("data-month") == eventDate.getMonth();
 				}).parent('td').append("<div class='eventPopUpDiv' id='" + eventDate.getDate() + "_eventPopUp' style='display:none'></div> ");
 
-			$('.ui-datepicker-calendar a')
+			$('.divDatePicker .ui-datepicker-calendar a')
 				.filter(function(index)
 				{
 					return $(this).text() == eventDate.getDate() &&
@@ -155,7 +156,7 @@
 					document.getElementById($(this).find('a').first().text() + "_eventPopUp").style.display = "inline";
 				});
 
-			$('.ui-datepicker-calendar a')
+			$('.divDatePicker .ui-datepicker-calendar a')
 				.filter(function(index)
 				{
 					return $(this).text() == eventDate.getDate() &&
@@ -167,9 +168,9 @@
 				});
 
 			calliHtml = '<li class="divCalendarLI"><a class="anchCalLi" href="' + itemURL + '">' + title + '</a> ' + eventDuration + '</li>';
-			$("#" + eventDate.getDate() + "_eventPopUp").append("<h3 class='calHead'>" + eventDate.toLocaleDateString() + "</h3 >");
-			$("#" + eventDate.getDate() + "_eventPopUp").append("<ul class = 'divCalendarUL'>");
-			$("#" + eventDate.getDate() + "_eventPopUp" + " .divCalendarUL").append(calliHtml);
+			$(".divDatePicker #" + eventDate.getDate() + "_eventPopUp").append("<h3 class='calHead'>" + eventDate.toLocaleDateString() + "</h3 >");
+			$(".divDatePicker #" + eventDate.getDate() + "_eventPopUp").append("<ul class = 'divCalendarUL'>");
+			$(".divDatePicker #" + eventDate.getDate() + "_eventPopUp" + " .divCalendarUL").append(calliHtml);
 		}
 
 		function getFormattedTime(eventDate)
@@ -205,7 +206,7 @@
 
 
 <style type="text/css">
-	.eventPopUpDiv {
+	.divDatePicker .eventPopUpDiv {
 		Z-INDEX: 9002;
 		PADDING-RIGHT: 10px;
 		BORDER-BOTTOM: black 1px solid;
@@ -216,28 +217,28 @@
 		BORDER-RIGHT: black 1px solid
 	}
 	
-	.CalendarLI {
+	.divDatePicker .CalendarLI {
 		MARGIN-LEFT: -23px;
 		FONT-WEIGHT: normal
 	}
 	
-	.divCalendarLI {
+	.divDatePicker .divCalendarLI {
 		MARGIN-LEFT: -23px
 	}
 	
-	.calHead {
+	.divDatePicker .calHead {
 		PADDING-LEFT: 4px;
 		PADDING-RIGHT: 4px;
 		FONT-SIZE: 8pt !important;
 		FONT-WEIGHT: bold !important
 	}
 	
-	.anchCalLi {
+	.divDatePicker .anchCalLi {
 
 		TEXT-ALIGN: left !important;
 	}
 	
-	.anchCalLi:hover {
+	.divDatePicker .anchCalLi:hover {
 		text-decoration: underline !important;
 		BORDER-RIGHT-WIDTH: 0px;
 		BACKGROUND: none transparent scroll repeat 0% 0%;
@@ -247,16 +248,16 @@
 		FONT-WEIGHT: normal !important
 	}
 	
-	.anchCalLi:visited {
+	.divDatePicker .anchCalLi:visited {
 		text-decoration: none;
 		color: rgb(0, 114, 188) !important;
 	}
 	
-	.ui-state-default:visited {
+	.divDatePicker .ui-state-default:visited {
 		text-decoration: none;
 		color: rgb(0, 114, 188) !important;
 	}
-	.ui-widget-header .ui-icon {
+	.divDatePicker .ui-widget-header .ui-icon {
 	  background-image: url("/ui-icons_222222_256x240.png);
 	}
 </style>

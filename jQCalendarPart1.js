@@ -58,7 +58,7 @@
 			{
 				operation: "GetListItems",
 				async: false,
-				listName: listName,
+				listName: "Calendar1",
 				CAMLViewFields: camlFields,
 				CAMLQuery: camlQuery,
 				CAMLQueryOptions: camlOptions,
@@ -84,6 +84,7 @@
 
 			$(calendarListItems.responseXML).SPFilterNode("z:row").each(function()
 			{
+				console.log("divDatePicker1 " + $(this).attr("ows_Title"));
 				date = new Date($(this).attr("ows_EventDate").substring(0, 4), $(this).attr("ows_EventDate").substring(5, 7) - 1, $(this).attr("ows_EventDate").substring(8, 10), $(this).attr("ows_EventDate").substring(11, 13), $(this).attr("ows_EventDate").substring(14, 16), $(this).attr("ows_EventDate").substring(17, 19));
 
 				itemURL = siteRelUrl + "/Lists/"+listName+"/DispForm.aspx?ID=" + $(this).attr("ows_ID");
@@ -105,7 +106,7 @@
 							$(this).parent('td').attr("data-month") == date.getMonth();
 					}).css("border", "2px solid #2989d1");
 					
-				if($('.divDatePicker1 .ui-datepicker-calendar a').first().parent('td').attr("data-year") == date.getFullYear() && $('.ui-datepicker-calendar a').first().parent('td').attr("data-month") == date.getMonth()){					
+				if($('.divDatePicker1 .ui-datepicker-calendar a').first().parent('td').attr("data-year") == date.getFullYear() && $('.divDatePicker1 .ui-datepicker-calendar a').first().parent('td').attr("data-month") == date.getMonth()){					
 					//Creating popup for the very first list item	
 					if (currentDate == null)
 					{
