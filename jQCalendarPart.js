@@ -48,6 +48,7 @@
 
 		function getCalendarData(year, month, date)
 		{
+			console.log(listName);
 			calendarDate = year + "-" + month + "-1";
 
 			camlFields = "<ViewFields><FieldRef Name='Title' /><FieldRef Name='EventDate' /><FieldRef Name='EndDate' /><FieldRef Name='Location' /><FieldRef Name='Description' /><FieldRef Name='fRecurrence' /><FieldRef Name='RecurrenceData' /><FieldRef Name='RecurrenceID' /><FieldRef Name='fAllDayEvent' /></ViewFields>";
@@ -84,7 +85,6 @@
 
 			$(calendarListItems.responseXML).SPFilterNode("z:row").each(function()
 			{
-				console.log("divDatePicker " + $(this).attr("ows_Title"));
 				date = new Date($(this).attr("ows_EventDate").substring(0, 4), $(this).attr("ows_EventDate").substring(5, 7) - 1, $(this).attr("ows_EventDate").substring(8, 10), $(this).attr("ows_EventDate").substring(11, 13), $(this).attr("ows_EventDate").substring(14, 16), $(this).attr("ows_EventDate").substring(17, 19));
 
 				itemURL = siteRelUrl + "/Lists/Calendar/DispForm.aspx?ID=" + $(this).attr("ows_ID");
