@@ -29,7 +29,6 @@
 	var formattedTime;
 	var i;
 	var calendarListItems;
-	var listName = "Calendar";
 
 	(function($)
 	{
@@ -48,7 +47,6 @@
 
 		function getCalendarData(year, month, date)
 		{
-			console.log(listName);
 			calendarDate = year + "-" + month + "-1";
 
 			camlFields = "<ViewFields><FieldRef Name='Title' /><FieldRef Name='EventDate' /><FieldRef Name='EndDate' /><FieldRef Name='Location' /><FieldRef Name='Description' /><FieldRef Name='fRecurrence' /><FieldRef Name='RecurrenceData' /><FieldRef Name='RecurrenceID' /><FieldRef Name='fAllDayEvent' /></ViewFields>";
